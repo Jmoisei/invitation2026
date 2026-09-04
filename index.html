@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #b59b6d; --dark: #1a1a1a; --light: #fdfcfb; --red: #e63946; }
+        body { margin: 0; font-family: 'Montserrat', sans-serif; background: var(--light); color: var(--dark); text-align: center; }
+        .hero { 
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+            url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&q=80') center/cover;
+            color: white; padding: 0 20px;
+        }
+        .names { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 8vw, 3.5rem); margin: 20px 0; }
+        .lang-switch { position: fixed; top: 20px; right: 20px; z-index: 1000; }
+        .lang-btn { background: white; border: 1px solid var(--dark); padding: 8px 15px; cursor: pointer; border-radius: 20px; font-weight: bold; margin-left: 5px; }
+        .section { padding: 60px 20px; max-width: 500px; margin: 0 auto; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-top: 20px; }
+        .heart-date { color: var(--red); font-weight: bold; position: relative; }
+        .heart-date::after { content: '❤'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2.5rem; color: rgba(230,57,70,0.2); z-index: -1; }
+        .timer-display { display: flex; justify-content: center; gap: 15px; font-size: 1.2rem; }
+        .timer-display span { display: block; font-size: 2rem; color: var(--gold); font-family: 'Cormorant Garamond', serif; font-weight: bold; }
+
+        /* Стилі для Локації та Таймлайну */
+        .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .location-section { background: #f4f1ee; padding: 60px 20px; }
+        .address-box { font-size: 1.1rem; line-height: 1.6; margin-top: 15px; }
+        
+        .timeline { max-width: 380px; margin: 30px auto 0; text-align: left; }
+        .timeline-item { display: flex; align-items: flex-start; margin-bottom: 25px; }
+        .time { width: 60px; font-weight: bold; font-size: 1.1rem; color: var(--gold); text-align: right; padding-right: 15px; flex-shrink: 0; }
+        .event-details { border-left: 2px solid var(--gold); padding-left: 20px; position: relative; }
+        .event-details::before { content: ''; position: absolute; left: -5px; top: 6px; width: 8px; height: 8px; background: var(--dark); border-radius: 50%; }
+        .event-title { font-size: 1.1rem; margin: 0 0 5px 0; font-weight: 600; }
+        .event-desc { font-size: 0.95rem; color: #666; margin: 0; }
+    </style>
+</head>
+<body>
+
+    <div class="lang-switch">
+        <button class="lang-btn" id="btn-ua">UA</button>
+        <button class="lang-btn" id="btn-de">DE</button>
+    </div>
+
+    <section class="hero">
+        <div id="t-hero-subtitle" style="text-transform: uppercase; letter-spacing: 3px;">Запрошення на весілля</div>
+        <div class="names" id="names-display">Christopher & Yuliia</div>
+        <div style="font-size: 1.5rem; border-top: 1px solid white; padding-top: 10px;">25.09.2026</div>
+    </section>
+
+    <section class="section">
+        <h2 id="t-guests-title">Дорогі Гості!</h2>
+        <div id="t-invite-text" style="line-height: 1.6; margin-bottom: 30px;"></div>        
+        <h3 id="t-month" style="color:var(--gold); font-family:serif; font-size:2rem; margin-top: 30px;">Вересень</h3>
+        <div class="calendar-grid" id="calendar-grid"></div>
+    </section>
+    <section class="section">
+        <h2 id="t-timer-title">До свята залишилось:</h2>
+        <div class="timer-display">
+            <div><span id="days">0</span><small id="t-days">днів</small></div>
+            <div><span id="hours">0</span><small id="t-hours">год</small></div>
+            <div><span id="mins">0</span><small id="t-mins">хв</small></div>
+            <div><span id="secs">0</span><small id="t-secs">сек</small></div>
+        </div>
+    </section>
+
+    <!-- НОВИЙ БЛОК: ЛОКАЦІЯ -->
+    <section class="location-section">
+        <div class="section" style="padding: 0;">
+            <h2 class="section-title" id="t-loc-title">ЛОКАЦІЯ</h2>
+            <p id="t-loc-sub" style="color: #666;">Будемо раді бачити вас за адресою:</p>
+            <div class="address-box">
+                <strong id="t-loc-name">"Назва Локації / Ресторану"</strong><br>
+                <span id="t-loc-address">Вулиця, Будинок<br>Місто, Індекс<br>Німеччина</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- НОВИЙ БЛОК: РОЗКЛАД ДНЯ -->
+    <section class="section">
+        <h2 id="t-time-title">РОЗКЛАД ДНЯ</h2>
+        <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 25px; text-align: left; max-width: 350px; margin-left: auto; margin-right: auto;">
+            <div style="display: flex; align-items: center; gap: 20px; border-left: 2px solid #b59b6d; padding-left: 15px;">
+                <span style="font-weight: bold; color: #b59b6d; min-width: 50px;">10:00</span>
+                <span id="t-ev1">Офіційна церемонія</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px; border-left: 2px solid #b59b6d; padding-left: 15px;">
+                <span style="font-weight: bold; color: #b59b6d; min-width: 50px;">10:30</span>
+                <span id="t-ev2">Ігристе та привітання</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px; border-left: 2px solid #b59b6d; padding-left: 15px;">
+                <span style="font-weight: bold; color: #b59b6d; min-width: 50px;">11:00</span>
+                <span id="t-ev3">Фотосесія</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px; border-left: 2px solid #b59b6d; padding-left: 15px;">
+                <span style="font-weight: bold; color: #b59b6d; min-width: 50px;">12:30</span>
+                <span id="t-ev4">Вільний час / Перерва</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px; border-left: 2px solid #b59b6d; padding-left: 15px;">
+                <span style="font-weight: bold; color: #b59b6d; min-width: 50px;">15:00</span>
+                <span id="t-ev5">Прибуття на локацію</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px; border-left: 2px solid #b59b6d; padding-left: 15px;">
+                <span style="font-weight: bold; color: #b59b6d; min-width: 50px;">15:30</span>
+                <span id="t-ev6">Кавування та торт</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px; border-left: 2px solid #b59b6d; padding-left: 15px;">
+                <span style="font-weight: bold; color: #b59b6d; min-width: 50px;">18:00</span>
+                <span id="t-ev7">Святковий шведський стіл</span>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const translations = {
+            ua: {
+                heroSubtitle: "Запрошення на весілля",
+                names: "Крістофер & Юлія", guestsTitle: "Дорогі Гості!", inviteText: "Ми одружуємося — і дуже хочемо розділити цей день із вами!​<br><br>Дата: 25 вересня 2026 року<br><br>​Програма дня:<br><br>10:00 — Розпис у Верхньому замку (Oberes Schloss, Siegen), після чого — келих шампанського та привітання<br><br>​15:00 — Свято, смачна їжа та розваги в Seven Hills (Weidenau)<br><br>Дрес-код: Святковий одяг, у якому вам буде комфортно.",
+                month: "Вересень", days: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"],
+                timer: "До свята залишилось:", d: "днів", h: "год", m: "хв", s: "сек",
+                
+                // Переклад Локації
+                locTitle: "ЛОКАЦІЯ", locSub: "Будемо раді бачити вас за адресою:",
+                locName: "Seven Hills", locAddr: "Formerstraße 3<br>57076 Siegen<br>Німеччина",
+                
+                // Переклад Розкладу
+                timeTitle: "РОЗКЛАД ДНЯ",
+                ev1: "Офіційна церемонія",
+                ev2: "Ігристе та привітання",
+                ev3: "Фотосесія",
+                ev4: "Вільний час / Перерва",
+                ev5: "Прибуття на локацію",
+                ev6: "Кава",
+                ev7: "Святковий шведський стіл"
+            },
+            de: {
+                heroSubtitle: "Wir sagen Ja!",
+                names: "Christopher & Yuliia", guestsTitle: "Liebe Gäste!", inviteText: "Wir trauen uns – und ihr müsst mit!<br><br>Ihr Lieben,<br><br>am 25. September 2026 wird geheiratet! Wir können uns keinen schöneren Tag vorstellen, als diesen Meilenstein gemeinsam mit euch zu feiern.<br><br>Unser Ablauf:<br><br>10:00 Uhr: Trauung im Oberen Schloss, Siegen mit anschließendem Sektempfang<br><br>15:00 Uhr: Party, gutes Essen & Anstoßen im Seven Hills in Weidenau<br><br>Dresscode: Werft euch gerne etwas Schickes an – zieht das an, worin ihr euch wohlfühlt und feierlich festlich ausseht!",
+                month: "September", days: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
+                timer: "Bis zur Hochzeit:", d: "Tage", h: "Std", m: "Min", s: "Sek",
+                
+                // Переклад Локації
+                locTitle: "STANDORT", locSub: "Wir freuen uns auf euch unter folgender Adresse:",
+                locName: "Seven Hills", locAddr: "Formerstraße 3<br>57076 Siegen<br>Deutschland",
+                
+                // Переклад Розкладу
+                timeTitle: "ZEITPLAN DES TAGES",
+                ev1: "Standesamtliche Trauung",
+                ev2: "Sektempfang",
+                ev3: "Fotos",
+                ev4: "Pause / Zeit zur freien Verfügung",
+                ev5: "Ankunft an der Location",
+                ev6: "Kaffeetrinken",
+                ev7: "Buffet"
+            }
+        };
+
+        function render(lang) {
+            const t = translations[lang];
+            document.getElementById('t-hero-subtitle').innerText = t.heroSubtitle;
+            document.getElementById('names-display').innerText = t.names;
+            document.getElementById('t-guests-title').innerText = t.guestsTitle;
+            document.getElementById('t-invite-text').innerHTML = t.inviteText;
+            document.getElementById('t-month').innerText = t.month;
+            document.getElementById('t-timer-title').innerText = t.timer;
+            document.getElementById('t-days').innerText = t.d;
+            document.getElementById('t-hours').innerText = t.h;
+            document.getElementById('t-mins').innerText = t.m;
+            document.getElementById('t-secs').innerText = t.s;
+
+// Оновлення локації
+            document.getElementById('t-loc-title').innerText = t.locTitle;
+            document.getElementById('t-loc-sub').innerText = t.locSub;
+            document.getElementById('t-loc-name').innerText = t.locName;
+            document.getElementById('t-loc-address').innerHTML = t.locAddr;
+
+// Оновлення таймлайну
+            document.getElementById('t-time-title').innerText = t.timeTitle;
+            document.getElementById('t-ev1').innerText = t.ev1;
+            document.getElementById('t-ev2').innerText = t.ev2;
+            document.getElementById('t-ev3').innerText = t.ev3;
+            document.getElementById('t-ev4').innerText = t.ev4;
+            document.getElementById('t-ev5').innerText = t.ev5;
+            document.getElementById('t-ev6').innerText = t.ev6;
+            document.getElementById('t-ev7').innerText = t.ev7;
+
+            const grid = document.getElementById('calendar-grid');
+            grid.innerHTML = '';
+            t.days.forEach(d => {
+                const dayHeader = document.createElement('div');
+                dayHeader.style.fontWeight = 'bold';
+                dayHeader.innerText = d;
+                grid.appendChild(dayHeader);
+                });
+            for(let i=0; i<1; i++) grid.appendChild(document.createElement('div'));
+            for(let i=1; i<=30; i++) {
+                const day = document.createElement('div');
+                day.innerText = i;
+                if(i === 25) day.className = 'heart-date';
+                grid.appendChild(day);
+            }
+        }
+
+        function updateTimer() {
+            const diff = new Date("2026-09-25T10:00:00").getTime() - new Date().getTime();
+            if (diff > 0) {
+                document.getElementById("days").innerText = Math.floor(diff / 86400000);
+                document.getElementById("hours").innerText = Math.floor((diff / 3600000) % 24);
+                document.getElementById("mins").innerText = Math.floor((diff / 60000) % 60);
+                document.getElementById("secs").innerText = Math.floor((diff / 1000) % 60);
+            }
+        }
+
+        window.onload = () => {
+            render('ua');
+            setInterval(updateTimer, 1000);
+            updateTimer();
+            document.getElementById('btn-ua').onclick = () => render('ua');
+            document.getElementById('btn-de').onclick = () => render('de');
+        };
+    </script>
+</body>
+</html>
