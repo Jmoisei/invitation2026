@@ -70,12 +70,20 @@
     <!-- НОВИЙ БЛОК: ЛОКАЦІЯ -->
     <section class="location-section">
         <div class="section" style="padding: 0;">
-            <h2 class="section-title" id="t-loc-title">ЛОКАЦІЯ</h2>
-            <p id="t-loc-sub" style="color: #666;">Будемо раді бачити вас за адресою:</p>
-            <div class="address-box">
-                <strong id="t-loc-name">"Назва Локації / Ресторану"</strong><br>
-                <span id="t-loc-address">Вулиця, Будинок<br>Місто, Індекс<br>Німеччина</span>
-            </div>
+        <!-- Блок 1: Standesamt / Trauung -->
+            <div style="background: #f4f1ee; padding: 20px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
+            <h3 style="color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-top: 0;" id="t-loc1-type">Церемонія (Trauung)</h3>
+            <p style="font-weight: bold; margin: 5px 0;">Oberes Schloss</p>
+            <p style="margin: 5px 0; font-size: 0.95rem; color: #555;">Burgstraße 5, 57072 Siegen</p>
+            <a href="https://maps.google.com/?q=Oberes+Schloss+Siegen+Burgstraße+5+57072+Siegen" target="_blank" style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: var(--dark); color: white; text-decoration: none; border-radius: 4px; font-size: 0.85rem;" id="t-map-btn1">Відкрити в Картах</a>
+        </div>
+
+        <!-- Блок 2: Вечірка / Location -->
+        <div style="background: #f4f1ee; padding: 20px; border-radius: 8px; text-align: center;">
+            <h3 style="color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-top: 0;" id="t-loc2-type">Святкування (Location)</h3>
+            <p style="font-weight: bold; margin: 5px 0;">Seven Hills</p>
+            <p style="margin: 5px 0; font-size: 0.95rem; color: #555;">Formerstraße 3, 57076 Siegen-Widenau</p>
+            <a href="https://maps.google.com/?q=Seven+Hills+Siegen+Formerstraße+3+57076+Siegen-Widenau" target="_blank" style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: var(--dark); color: white; text-decoration: none; border-radius: 4px; font-size: 0.85rem;" id="t-map-btn2">Відкрити в Картах</a>
         </div>
     </section>
 
@@ -123,8 +131,10 @@
                 timer: "До свята залишилось:", d: "днів", h: "год", m: "хв", s: "сек",
                 
                 // Переклад Локації
-                locTitle: "ЛОКАЦІЯ", locSub: "Будемо раді бачити вас за адресою:",
-                locName: "Seven Hills", locAddr: "Formerstraße 3<br>57076 Siegen<br>Німеччина",
+                locTitle: "ЛОКАЦІЇ",
+                loc1Type: "Офіційна церемонія",
+                loc2Type: "Святкування",
+                mapBtn: "Відкрити на карті",
                 
                 // Переклад Розкладу
                 timeTitle: "РОЗКЛАД ДНЯ",
@@ -143,8 +153,10 @@
                 timer: "Bis zur Hochzeit:", d: "Tage", h: "Std", m: "Min", s: "Sek",
                 
                 // Переклад Локації
-                locTitle: "STANDORT", locSub: "Wir freuen uns auf euch unter folgender Adresse:",
-                locName: "Seven Hills", locAddr: "Formerstraße 3<br>57076 Siegen<br>Deutschland",
+                locTitle: "LOCATIONS",
+                loc1Type: "Standesamtliche Trauung",
+                loc2Type: "Feier&Location",
+                mapBtn: "In Google Maps öffnen",
                 
                 // Переклад Розкладу
                 timeTitle: "ZEITPLAN DES TAGES",
@@ -173,9 +185,10 @@
 
 // Оновлення локації
             document.getElementById('t-loc-title').innerText = t.locTitle;
-            document.getElementById('t-loc-sub').innerText = t.locSub;
-            document.getElementById('t-loc-name').innerText = t.locName;
-            document.getElementById('t-loc-address').innerHTML = t.locAddr;
+            document.getElementById('t-loc1-type').innerText = t.loc1Type;
+            document.getElementById('t-loc2-type').innerText = t.loc1Type;
+            document.getElementById('t-map-btn1').innerText = t.mapBtn;
+            document.getElementById('t-map-btn2').innerText = t.mapBtn;
 
 // Оновлення таймлайну
             document.getElementById('t-time-title').innerText = t.timeTitle;
